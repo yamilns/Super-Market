@@ -3,12 +3,6 @@ import numpy as np
 import pandas as pd
 from scipy.stats import beta, norm, skew, kurtosis
 
-# Función para calcular y ajustar la distribución beta
-def ajuste_beta(data):
-    alpha, beta_param, _, _ = beta.fit(data)
-    media_norm = alpha / (alpha + beta_param)
-    varianza_norm = (alpha * beta_param) / ((alpha + beta_param) ** 2 * (alpha + beta_param + 1))
-    return alpha, beta_param, media_norm, varianza_norm
 
 # Cargar los datos del archivo CSV
 data = pd.read_csv("C:\\Users\\yamil\\Downloads\\SuperMarketData.csv")
@@ -51,14 +45,4 @@ print("Probabilidad de que el promedio de los ratings sea mayor a 8.5:", probabi
 # Calcular el intervalo de confianza del 95% para la media
 confianza_95 = norm.interval(0.95, loc=mean_rating, scale=std_dev_rating)
 print("Intervalo de confianza del 95% para la media de ratings:", confianza_95)
-
-# Visualización de la distribución ajustada
-x = np.linspace(min_rating, max_rating, 100)
-beta_dist = beta.pdf((x - min_rating) / (max_rating - min_rating), alpha, beta_param)
-plt.hist(ratings, bins=20, density=True, alpha=0.6, color="skyblue", edgecolor="black", label="Datos")
-plt.plot(x, beta_dist * (max_rating - min_rating), color="darkred", label="Ajuste Beta", lw=2)
-plt.xlabel("Rating")
-plt.title("Distribución de Ratings con Ajuste Beta")
-plt.legend()
-plt.show()
 
